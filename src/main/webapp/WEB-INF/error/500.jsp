@@ -68,10 +68,14 @@
 <div id="err-500">
     <div id="msg">
         <span id="emoji"></span>
-        <span>SSM实现增删改查</span>
+        <span>对不起亲，服务器内部出错了哦...</span>
+    </div>
+    <div id="code">
+        500
     </div>
     <div id="youcan">
-        <a id="index">用户列表</a>
+        您还可以:
+        <a id="index">返回用户列表</a>
     </div>
 </div>
 </body>

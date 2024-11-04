@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8"/>
     <style>
-        #err-500{ width:100%; }
+        #err-code{ width:100%; }
         #msg,#code,#youcan{
             color:#72AAB4;
             text-align:center;
@@ -55,7 +55,7 @@
         window.onload = function(){
             var a = document.getElementById("index");
             a.onclick=function(){
-                window.location.href="http://localhost:8089/userList";
+                window.location.href="http://localhost:8089/ssm/userList";
                 /* 防止页面嵌套 */
                 if (window.top != window.self) {
                     top.location.href = "http://localhost:8089/userList";
@@ -65,13 +65,17 @@
     </script>
 </head>
 <body>
-<div id="err-500">
+<div id="err-code">
     <div id="msg">
         <span id="emoji"></span>
-        <span>SSM实现增删改查</span>
+        <span>对不起亲，您访问的网页去了火星...</span>
+    </div>
+    <div id="code">
+        404
     </div>
     <div id="youcan">
-        <a id="index">用户列表</a>
+        您还可以:
+        <a id="index">返回用户列表</a>
     </div>
 </div>
 </body>
