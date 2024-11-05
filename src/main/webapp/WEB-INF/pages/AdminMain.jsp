@@ -27,7 +27,7 @@
                     <img src="images/logo_logo.png" alt="">
                 </div>
                 <div class="profile_data">
-                    <p class="name">用户名</p>
+                    <p class="name">${sessionScope.user.name}</p>
                     <span>
                         <i class="fas fa-map-marker-alt"></i>
                         欢迎进入该系统
@@ -93,8 +93,9 @@
                 </li>
             </ul>
             <div class="logout_btn">
-                <a href="#">退出登陆</a>
+                <a href="${pageContext.request.contextPath}/logout">退出登陆</a>
             </div>
+
         </div>
     </div>
     <div class="main_container">
