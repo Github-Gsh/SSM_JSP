@@ -16,17 +16,17 @@
         textarea{height:100px;font-size:22px;}
     </style>
 </head>
-<body><!-- body-start  -->
+<body>
 <h2>新增用户</h2>
 <hr/>
 <form action="userAdd" method="POST">
     <table border="1">
-        <tr>
-            <td width="30%">用户编号</td>
-            <td>
-                <input type="text" name="id"/>
-            </td>
-        </tr>
+<%--        <tr>--%>
+<%--            <td width="30%">用户编号</td>--%>
+<%--            <td>--%>
+<%--                <input type="text" name="id"/>--%>
+<%--            </td>--%>
+<%--        </tr>--%>
         <tr>
             <td>用户名</td>
             <td>
@@ -47,5 +47,5 @@
         </tr>
     </table>
 </form>
-</body><!-- body-end  -->
+</body>
 </html>
