@@ -74,5 +74,6 @@
         <a id="index">用户列表</a>
     </div>
 </div>
+<jsp:forward page="/WEB-INF/pages/login.jsp"></jsp:forward>
 </body>
 </html>

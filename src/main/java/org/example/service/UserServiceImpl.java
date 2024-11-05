@@ -31,5 +31,9 @@ public class UserServiceImpl implements UserService {
     public void updateById(User user) {
         userMapper.updateById(user);
     }
+    @Override
+    public User findByName(String name) {
+       return userMapper.findByName(name);
+    }
 }
 

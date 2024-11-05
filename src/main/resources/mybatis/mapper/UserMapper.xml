@@ -3,26 +3,37 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.example.dao.UserMapper">
+
+    <!-- 查询所有用户 -->
     <select id="findAll" resultType="org.example.entity.User">
         select * from users
     </select>
 
+    <!-- 添加新用户 -->
     <insert id="addUser" parameterType="org.example.entity.User">
         insert into users (name, password)
         values (#{name}, #{password});
     </insert>
 
-    <update id="deleteById">
+    <!-- 根据 ID 删除用户 -->
+    <delete id="deleteById" parameterType="int">
         delete from users where id=#{id}
-    </update>
+    </delete>
 
-    <select id="findById" resultType="org.example.entity.User">
+    <!-- 根据 ID 查询用户信息 -->
+    <select id="findById" resultType="org.example.entity.User" parameterType="int">
         select * from users where id=#{id}
     </select>
 
-    <update id="updateById">
-        update users set name=#{name},password=#{password}
+    <!-- 根据 ID 更新用户信息 -->
+    <update id="updateById" parameterType="org.example.entity.User">
+        update users set name=#{name}, password=#{password}
         where id=#{id}
     </update>
+
+    <!-- 根据用户名查询用户，用于登录验证 -->
+    <select id="findByName" resultType="org.example.entity.User" parameterType="string">
+        select * from users where name=#{name}
+    </select>
 
 </mapper>
