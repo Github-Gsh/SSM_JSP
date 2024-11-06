@@ -43,6 +43,19 @@ public class UserController {
         userService.updateById(user);
         return "redirect:/userList";
     }
+
+    //注册
+    @RequestMapping("/userRegister")
+    public String userRegister(User user, Model model) {
+        boolean isRegistered = userService.registerUser(user);
+        if (isRegistered) {
+            return "redirect:/login"; // 注册成功后跳转到登录页面
+        } else {
+            model.addAttribute("error", "注册失败，请重试");
+            return "register"; // 注册失败重新返回注册页面
+        }
+    }
+
     @RequestMapping("/{page}")
     public String page(@PathVariable String page) {
         return page;

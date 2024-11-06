@@ -11,4 +11,7 @@ public interface UserMapper {
     public User findById(Integer id);
     public void updateById(User user);
     public User findByName(String name);
+    //注册
+    void insertUser(User user);
+
 }

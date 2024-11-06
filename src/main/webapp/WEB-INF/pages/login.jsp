@@ -33,7 +33,7 @@
         </table>
         <p>
             <input type="submit" class="button" value="登录" />
-            <input type="button" class="button" value="注册" onclick="window.location.href='${path}/user/register'" />
+            <input type="button" class="button" value="注册" onclick="window.location.href='${path}/register'" />
 
         </p>
     </form>

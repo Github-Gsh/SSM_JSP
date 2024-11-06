@@ -18,5 +18,8 @@ public interface UserService {
     public void updateById(User user);
 
     public User findByName(String name);
+
+    boolean registerUser(User user);
+
 }
 

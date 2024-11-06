@@ -35,5 +35,16 @@ public class UserServiceImpl implements UserService {
     public User findByName(String name) {
        return userMapper.findByName(name);
     }
+
+    @Override
+    public boolean registerUser(User user) {
+        try {
+            userMapper.insertUser(user);
+            return true;
+        } catch (Exception e) {
+            // 处理异常，例如日志记录
+            return false;
+        }
+    }
 }
 

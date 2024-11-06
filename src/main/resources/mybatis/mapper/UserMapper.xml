@@ -35,5 +35,9 @@
     <select id="findByName" resultType="org.example.entity.User" parameterType="string">
         select * from users where name=#{name}
     </select>
-
+    <!--注册-->
+    <insert id="insertUser" parameterType="org.example.entity.User">
+        INSERT INTO users (name, password)
+        VALUES (#{name}, #{password});
+    </insert>
 </mapper>
