@@ -1,5 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ page contentType="text/html; charset=UTF-8" isELIgnored="false" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>。
 <html>
 <head>
     <title>用户注册</title>
@@ -44,6 +45,11 @@
 <body>
 <div id="content">
     <h2>用户注册</h2>
+    <%-- 显示错误信息 --%>
+    <c:if test="${not empty error}">
+        <div class="error">${error}</div>
+    </c:if>
+
     <form action="${pageContext.request.contextPath}/userRegister" method="post">
         <table>
             <tr>

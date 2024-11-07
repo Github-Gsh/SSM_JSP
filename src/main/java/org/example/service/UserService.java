@@ -21,5 +21,8 @@ public interface UserService {
 
     boolean registerUser(User user);
 
+    //注册时检查是否存在同名用户
+    boolean isUserNameTaken(String name);
+
 }
 

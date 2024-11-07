@@ -35,16 +35,30 @@ public class UserServiceImpl implements UserService {
     public User findByName(String name) {
        return userMapper.findByName(name);
     }
+    //检查是否存在同名用户
+    @Override
+    public boolean isUserNameTaken(String name) {
+        User user = userMapper.findByName(name);
+        return user != null; // 如果找到用户，返回 true，表示用户名已存在
+    }
 
+    //注册时检查是否存在同名用户
     @Override
     public boolean registerUser(User user) {
+        // 检查用户名是否已经存在
+        if (isUserNameTaken(user.getName())) {
+            return false; // 用户名已存在，注册失败
+        }
         try {
-            userMapper.insertUser(user);
-            return true;
+            userMapper.insertUser(user); // 插入用户信息
+            return true; // 注册成功
         } catch (Exception e) {
-            // 处理异常，例如日志记录
-            return false;
+            // 处理异常，例如记录日志
+            e.printStackTrace(); // 或使用日志框架记录异常
+            return false; // 注册失败
         }
     }
+
+
 }
 

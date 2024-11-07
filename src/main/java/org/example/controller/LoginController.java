@@ -48,6 +48,8 @@ public class LoginController {
         return "redirect:/login"; // 重定向到登录页面
     }
 
+
+
     @RequestMapping("/AdminMain")
     public String adminMain() {
         return "AdminMain";

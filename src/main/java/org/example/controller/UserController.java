@@ -44,6 +44,8 @@ public class UserController {
         return "redirect:/userList";
     }
 
+    //注册前
+
     //注册
     @RequestMapping("/userRegister")
     public String userRegister(User user, Model model) {
