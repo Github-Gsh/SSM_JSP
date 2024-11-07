@@ -32,19 +32,18 @@ public class UserController {
         userService.deleteById( id );
         return "redirect:/AdminMain";
     }
-    @RequestMapping("/userInfo")
-    public String userInfo(Model model, Integer id) {
-        User user = userService.findById( id );
-        model.addAttribute("user",user);
-        return "user_update";
-    }
+//    @RequestMapping("/userInfo")
+//    public String userInfo(Model model, Integer id) {
+//        User user = userService.findById( id );
+//        model.addAttribute("user",user);
+//        return "user_update";
+//    }
     @RequestMapping("/userUpdate")
     public String userUpdate(User user) {
         userService.updateById(user);
-        return "redirect:/userList";
+        return "redirect:/AdminMain";
     }
 
-    //注册前
 
     //注册
     @RequestMapping("/userRegister")

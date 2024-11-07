@@ -24,7 +24,7 @@
             </div>
             <div class="profile_info">
                 <div class="profile_img">
-                    <img src="images/logo_logo.png" alt="">
+                    <img src="img/e.png" alt="">
                 </div>
                 <div class="profile_data">
                     <p class="name">${sessionScope.user.name}</p>
@@ -109,7 +109,9 @@
         </div>
         <div class="content" id="content">
             <div class="item">
-                这是一个测试文字？？？？？？？？？
+                Tip
+                :
+                注册时不允许重名，但是新增和修改时允许，这是个后续需修改的BUG
             </div>
         </div>
     </div>
