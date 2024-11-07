@@ -25,12 +25,12 @@ public class UserController {
     @RequestMapping("/userAdd")
     public String userAdd(User user, Model model) {
         userService.addUser(user);
-        return "redirect:/userList";
+        return "redirect:/AdminMain";
     }
     @RequestMapping("/userDelete")
     public String userDelete(Integer id) {
         userService.deleteById( id );
-        return "redirect:/userList";
+        return "redirect:/AdminMain";
     }
     @RequestMapping("/userInfo")
     public String userInfo(Model model, Integer id) {
