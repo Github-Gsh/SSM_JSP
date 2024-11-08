@@ -1,91 +1,82 @@
-<%@ page pageEncoding="utf-8"%>
-<%-- 引入JSTL标签库 --%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE HTML>
 <html>
 <head>
-    <!-- 引入 Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
-    <!-- 引入 jQuery 和 Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="/js/jquery-3.5.1.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
 
     <title>用户列表</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <style type="text/css">
-        body{ font-family: "微软雅黑"; background-color: #EDEDED; }
-        h2{ text-align: center;}
-        table{ width:96%; margin: 0 auto; text-align: center; border-collapse:collapse; font-size:16px;}
-        td, th{ padding: 5px;}
-        th{ background-color: #DCDCDC; width:120px; }
-        th.width-40{ width: 40px; }
-        th.width-70{ width: 70px; }
-        th.width-80{ width: 80px; }
-        hr{ margin-bottom:20px; border:1px solid #aaa; }
-        #add-user{text-align:center;font-size:20px;}
+    <style>
+        body { font-family: "微软雅黑"; background-color: #EDEDED; }
+        h2 { text-align: center; }
+        #add-user { text-align: center; font-size: 20px; }
     </style>
     <script>
         // 打开新增用户模态框
         function openUserAddModal() {
             $('#userAddModal').modal('show');
-            $('#userAddForm')[0].reset();  // 清空表单
-            $('#userAddForm').attr('action', 'userAdd');  // 设置新增用户的提交路径
-            $('#userAddModalLabel').text('新增用户');  // 修改标题
+            $('#userAddForm')[0].reset();
+            $('#userAddForm').attr('action', 'userAdd');
+            $('#userAddModalLabel').text('新增用户');
         }
 
         // 打开修改用户模态框并填充数据
         function openUserEditModal(userId, userName, userPassword) {
             $('#userAddModal').modal('show');
-            $('#userAddForm')[0].reset();  // 清空表单
-            $('#userAddForm').attr('action', 'userUpdate');  // 设置更新用户的提交路径
-            $('#userAddModalLabel').text('修改用户');  // 修改标题
+            $('#userAddForm')[0].reset();
+            $('#userAddForm').attr('action', 'userUpdate');
+            $('#userAddModalLabel').text('修改用户');
 
-            // 填充用户信息到表单
             $('#name').val(userName);
             $('#password').val(userPassword);
-            $('#userId').val(userId);  // 存储用户ID以便后端识别
+            $('#userId').val(userId);
         }
+
+        // 使用 AJAX 查询用户
+        $(document).ready(function() {
+            $('#userSearchForm').on('submit', function(event) {
+                event.preventDefault();
+
+                $.ajax({
+                    url: 'userSearch',
+                    type: 'GET',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#user-list').html(response); // 将查询结果插入到用户列表区域
+                    },
+                    error: function() {
+                        alert('查询失败，请重试！');
+                    }
+                });
+            });
+        });
     </script>
 </head>
-<body><!-- body-start  -->
+<body>
 <h2>用户列表</h2>
 <div id="add-user">
     <button type="button" onclick="openUserAddModal()">新增用户</button>
 </div>
 
+<!-- 查询用户表单 -->
 <div id="search-user" style="text-align:center; margin-bottom: 20px;">
-    <form id="userSearchForm" action="userSearch" method="get">
+    <form id="userSearchForm">
         <input type="text" name="name" placeholder="请输入用户名">
         <button type="submit">查询</button>
     </form>
 </div>
 
-
 <hr/>
-<table border="1">
-    <tr>
-        <th class="width-40">编号</th>
-        <th>用户名</th>
-        <th class="width-80">密码</th>
-        <th class="width-80">操作</th>
-    </tr>
 
-    <!-- 显示用户列表 -->
-    <c:forEach items="${list}" var="user" varStatus="status">
-        <tr>
-            <td>${status.count}</td>
-            <td>${user.name}</td>
-            <td>${user.password}</td>
-            <td>
-                <a href="userDelete?id=${user.id}">删除</a>
-                &nbsp;|&nbsp;
-                <button type="button" onclick="openUserEditModal(${user.id}, '${user.name}', '${user.password}')">修改</button>
-            </td>
-        </tr>
-    </c:forEach>
-</table>
+<!-- 用户列表显示区域 -->
+<div id="user-list">
+    <!-- 初始页面加载时显示用户列表 -->
+    <jsp:include page="user_table.jsp" />
+</div>
 
 <!-- 修改/新增用户模态框 -->
 <div class="modal fade" id="userAddModal" tabindex="-1" role="dialog" aria-labelledby="userAddModalLabel" aria-hidden="true">
@@ -98,9 +89,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <!-- 新增/修改用户表单 -->
                 <form id="userAddForm" action="userAdd" method="post">
-                    <input type="hidden" id="userId" name="id">  <!-- 隐藏的用户ID -->
+                    <input type="hidden" id="userId" name="id">
                     <label for="name">用户名:</label>
                     <input type="text" id="name" name="name" required>
 
@@ -113,6 +103,5 @@
         </div>
     </div>
 </div>
-
-</body><!-- body-end  -->
+</body>
 </html>

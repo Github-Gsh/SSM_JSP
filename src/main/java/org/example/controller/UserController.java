@@ -38,8 +38,9 @@ public class UserController {
     public String searchUser(@RequestParam("name") String name, Model model) {
         List<User> users = userService.searchUser(name);  // 调用 Service 层的 searchUser 方法
         model.addAttribute("list", users);  // 将查询结果传递给视图
-        return "user_list";  // 返回用户列表页面，显示查询结果
+        return "user_table";  // 返回包含用户表格的视图片段
     }
+
 
 
     @RequestMapping("/userUpdate")
