@@ -58,7 +58,11 @@ public class UserServiceImpl implements UserService {
             return false; // 注册失败
         }
     }
-
+   //用户列表查用户
+    @Override
+    public List<User> searchUser(String username) {
+        return userMapper.searchUser("%" + username + "%");  // 使用模糊查询
+    }
 
 }
 

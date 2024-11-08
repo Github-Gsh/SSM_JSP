@@ -54,6 +54,15 @@
 <div id="add-user">
     <button type="button" onclick="openUserAddModal()">新增用户</button>
 </div>
+
+<div id="search-user" style="text-align:center; margin-bottom: 20px;">
+    <form id="userSearchForm" action="userSearch" method="get">
+        <input type="text" name="name" placeholder="请输入用户名">
+        <button type="submit">查询</button>
+    </form>
+</div>
+
+
 <hr/>
 <table border="1">
     <tr>

@@ -23,6 +23,8 @@ public interface UserService {
 
     //注册时检查是否存在同名用户
     boolean isUserNameTaken(String name);
+    //用户列表查询用户
+    List<User> searchUser(String username);
 
 }
 

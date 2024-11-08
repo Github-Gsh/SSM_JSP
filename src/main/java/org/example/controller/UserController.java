@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 import java.util.List;
@@ -32,12 +33,15 @@ public class UserController {
         userService.deleteById( id );
         return "redirect:/AdminMain";
     }
-//    @RequestMapping("/userInfo")
-//    public String userInfo(Model model, Integer id) {
-//        User user = userService.findById( id );
-//        model.addAttribute("user",user);
-//        return "user_update";
-//    }
+    // 查询用户
+    @RequestMapping("/userSearch")
+    public String searchUser(@RequestParam("name") String name, Model model) {
+        List<User> users = userService.searchUser(name);  // 调用 Service 层的 searchUser 方法
+        model.addAttribute("list", users);  // 将查询结果传递给视图
+        return "user_list";  // 返回用户列表页面，显示查询结果
+    }
+
+
     @RequestMapping("/userUpdate")
     public String userUpdate(User user) {
         userService.updateById(user);
