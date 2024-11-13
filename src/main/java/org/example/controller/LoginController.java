@@ -30,16 +30,27 @@ public class LoginController {
             HttpSession session,
             Model model) {
         User user = userService.findByName(name);
+
         if (user != null && user.getPassword().equals(password)) {
             // 登录成功，保存用户信息到 session
             session.setAttribute("user", user);
-            return "redirect:/AdminMain"; // 重定向到 AdminMain 页面
+
+            // 根据用户的角色跳转到不同的页面
+            if ("admin".equals(user.getRole())) {
+                return "redirect:/AdminMain";
+            } else if ("u".equals(user.getRole())) {
+                return "redirect:/uuserMain";
+            } else {
+                model.addAttribute("error", "未知角色权限");
+                return "login";
+            }
         } else {
             // 登录失败，返回登录页面并显示错误信息
             model.addAttribute("error", "用户名或密码错误");
             return "login";
         }
     }
+
 
     // 退出登录
     @RequestMapping("/logout")
@@ -64,6 +75,11 @@ public class LoginController {
     @RequestMapping("/AdminMain")
     public String adminMain() {
         return "AdminMain";
+    }
+
+    @RequestMapping("/uuserMain")
+    public String uuserMain() {
+        return "uuserMain";
     }
 
 

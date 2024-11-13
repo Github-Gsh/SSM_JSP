@@ -58,7 +58,6 @@
         // 使用 AJAX 删除用户
         function deleteUser(userId) {
             if (!confirm("确定要删除此用户吗？")) return; // 删除确认
-
             $.ajax({
                 url: 'userDelete',
                 type: 'POST',

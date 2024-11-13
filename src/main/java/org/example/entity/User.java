@@ -5,6 +5,7 @@ public class User {
   private Integer id;
   private String name;
   private String password;
+  private String role;
 
   @Override
   public String toString() {
@@ -12,6 +13,7 @@ public class User {
             "id=" + id +
             ", name='" + name + '\'' +
             ", password='" + password + '\'' +
+            ", role='" + role + '\'' +
             '}';
   }
 
@@ -37,5 +39,13 @@ public class User {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public String getRole() {
+    return role;
+  }
+
+  public void setRole(String role) {
+    this.role = role;
   }
 }
