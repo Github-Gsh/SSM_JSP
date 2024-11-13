@@ -29,7 +29,7 @@ public class LoginController {
             @RequestParam("password") String password,
             HttpSession session,
             Model model) {
-        User user = userService.findByName(name); // 假设 UserService 中有 findByName 方法
+        User user = userService.findByName(name);
         if (user != null && user.getPassword().equals(password)) {
             // 登录成功，保存用户信息到 session
             session.setAttribute("user", user);
@@ -48,6 +48,17 @@ public class LoginController {
         return "redirect:/login"; // 重定向到登录页面
     }
 
+    //注册
+    @RequestMapping("/userRegister")
+    public String userRegister(User user, Model model) {
+        boolean isRegistered = userService.registerUser(user);
+        if (isRegistered) {
+            return "redirect:/login"; // 注册成功后跳转到登录页面
+        } else {
+            model.addAttribute("error", "注册失败，请重试");
+            return "register"; // 注册失败重新返回注册页面
+        }
+    }
 
 
     @RequestMapping("/AdminMain")

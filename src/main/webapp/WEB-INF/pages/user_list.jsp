@@ -16,6 +16,62 @@
         #add-user { text-align: center; font-size: 20px; }
     </style>
     <script>
+        $(document).ready(function() {
+            // 查询用户的AJAX逻辑（保持不变）
+            $('#userSearchForm').on('submit', function(event) {
+                event.preventDefault();
+
+                $.ajax({
+                    url: 'userSearch',
+                    type: 'GET',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#user-list').html(response); // 插入查询结果到用户列表
+                    },
+                    error: function() {
+                        alert('查询失败，请重试！');
+                    }
+                });
+            });
+
+            // 提交新增或修改用户表单的AJAX逻辑
+            $('#userAddForm').on('submit', function(event) {
+                event.preventDefault();
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        // 关闭模态框
+                        $('#userAddModal').modal('hide');
+                        // 更新用户列表
+                        $('#user-list').html(response);
+                    },
+                    error: function() {
+                        alert('保存失败，请重试！');
+                    }
+                });
+            });
+        });
+
+        // 使用 AJAX 删除用户
+        function deleteUser(userId) {
+            if (!confirm("确定要删除此用户吗？")) return; // 删除确认
+
+            $.ajax({
+                url: 'userDelete',
+                type: 'POST',
+                data: { id: userId },
+                success: function(response) {
+                    $('#user-list').html(response); // 更新用户列表区域
+                },
+                error: function() {
+                    alert('删除失败，请重试！');
+                }
+            });
+        }
+
         // 打开新增用户模态框
         function openUserAddModal() {
             $('#userAddModal').modal('show');
@@ -35,26 +91,8 @@
             $('#password').val(userPassword);
             $('#userId').val(userId);
         }
-
-        // 使用 AJAX 查询用户
-        $(document).ready(function() {
-            $('#userSearchForm').on('submit', function(event) {
-                event.preventDefault();
-
-                $.ajax({
-                    url: 'userSearch',
-                    type: 'GET',
-                    data: $(this).serialize(),
-                    success: function(response) {
-                        $('#user-list').html(response); // 将查询结果插入到用户列表区域
-                    },
-                    error: function() {
-                        alert('查询失败，请重试！');
-                    }
-                });
-            });
-        });
     </script>
+
 </head>
 <body>
 <h2>用户列表</h2>

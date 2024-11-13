@@ -16,7 +16,7 @@
             <td>${user.name}</td>
             <td>${user.password}</td>
             <td>
-                <a href="userDelete?id=${user.id}">删除</a>
+                <button onclick="deleteUser(${user.id})">删除</button>
                 &nbsp;|&nbsp;
                 <button type="button" onclick="openUserEditModal(${user.id}, '${user.name}', '${user.password}')">修改</button>
             </td>

@@ -5,11 +5,7 @@ import org.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,51 +13,52 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    // 显示用户列表
     @RequestMapping("/userList")
     public String userList(Model model) {
         List<User> list = userService.findAll();
         model.addAttribute("list", list);
         return "user_list";
     }
+
+    // 新增用户，并返回更新后的用户表
     @RequestMapping("/userAdd")
     public String userAdd(User user, Model model) {
         userService.addUser(user);
-        return "redirect:/AdminMain";
+        List<User> updatedList = userService.findAll();
+        model.addAttribute("list", updatedList);
+        return "user_table"; // 返回用户表格部分视图
     }
-    @RequestMapping("/userDelete")
-    public String userDelete(Integer id) {
-        userService.deleteById( id );
-        return "redirect:/AdminMain";
+
+    // 删除用户，并返回更新后的用户表
+    @RequestMapping(value = "/userDelete", method = RequestMethod.POST)
+    public String userDelete(@RequestParam("id") Integer id, Model model) {
+        userService.deleteById(id);
+        List<User> updatedList = userService.findAll();
+        model.addAttribute("list", updatedList);
+        return "user_table"; // 返回用户表格部分视图
     }
+
+
     // 查询用户
     @RequestMapping("/userSearch")
     public String searchUser(@RequestParam("name") String name, Model model) {
-        List<User> users = userService.searchUser(name);  // 调用 Service 层的 searchUser 方法
-        model.addAttribute("list", users);  // 将查询结果传递给视图
-        return "user_table";  // 返回包含用户表格的视图片段
+        List<User> users = userService.searchUser(name);
+        model.addAttribute("list", users);
+        return "user_table"; // 返回用户表格部分视图
     }
 
-
-
+    // 更新用户，并返回更新后的用户表
     @RequestMapping("/userUpdate")
-    public String userUpdate(User user) {
+    public String userUpdate(User user, Model model) {
         userService.updateById(user);
-        return "redirect:/AdminMain";
+        List<User> updatedList = userService.findAll();
+        model.addAttribute("list", updatedList);
+        return "user_table"; // 返回用户表格部分视图
     }
 
-
-    //注册
-    @RequestMapping("/userRegister")
-    public String userRegister(User user, Model model) {
-        boolean isRegistered = userService.registerUser(user);
-        if (isRegistered) {
-            return "redirect:/login"; // 注册成功后跳转到登录页面
-        } else {
-            model.addAttribute("error", "注册失败，请重试");
-            return "register"; // 注册失败重新返回注册页面
-        }
-    }
-
+    // 用于动态页面加载
     @RequestMapping("/{page}")
     public String page(@PathVariable String page) {
         return page;
