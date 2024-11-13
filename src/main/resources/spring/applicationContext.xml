@@ -35,6 +35,9 @@
         <!-- 扫描所有XxxMapper接口，将接口实例的创建交给spring容器 -->
         <property name="basePackage" value="org.example.dao"/>
     </bean>
+<!--    文件上传-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+
     <!-- 5.配置需要扫描的包(service层)：spring自动去扫描 base-package下的类，如果扫描到的类上有 @Controller、@Service、@Component等注解，将会自动将类注册为bean（即由spring创建实例）
         @Service
      -->

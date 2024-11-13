@@ -1,5 +1,7 @@
 package org.example.entity;
 
+import java.util.Arrays;
+
 public class uuser {
     private String name;
     private int age;
@@ -7,7 +9,7 @@ public class uuser {
     private String phone;
     private String address;
     private String mail;
-    private String headshot;
+    private byte[] headshot;
     private String project;
     private String organization;
 
@@ -20,7 +22,7 @@ public class uuser {
                 ", phone='" + phone + '\'' +
                 ", address='" + address + '\'' +
                 ", mail='" + mail + '\'' +
-                ", headshot='" + headshot + '\'' +
+                ", headshot=" + Arrays.toString(headshot) +
                 ", project='" + project + '\'' +
                 ", organization='" + organization + '\'' +
                 '}';
@@ -74,11 +76,11 @@ public class uuser {
         this.mail = mail;
     }
 
-    public String getHeadshot() {
+    public byte[] getHeadshot() {
         return headshot;
     }
 
-    public void setHeadshot(String headshot) {
+    public void setHeadshot(byte[] headshot) {
         this.headshot = headshot;
     }
 

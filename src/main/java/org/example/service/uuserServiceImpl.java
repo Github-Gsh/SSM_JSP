@@ -15,4 +15,9 @@ public class uuserServiceImpl implements uuserService {
     public uuser findByuName(String name) {
         return uuserMapper.findByuName(name);
     }
+
+    @Override
+    public void updateHeadshot(uuser user) {
+        uuserMapper.updateHeadshot(user);
+    }
 }

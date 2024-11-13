@@ -101,6 +101,14 @@
             <artifactId>druid</artifactId>
             <version>${druid.version}</version>
         </dependency>
+<!--上传文件-->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.4</version>
+        </dependency>
+
+
     </dependencies>
     <build>
         <finalName>ssm</finalName>

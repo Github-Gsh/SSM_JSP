@@ -8,4 +8,11 @@
         select * from uuser where name=#{name}
     </select>
 
+    <update id="updateHeadshot" parameterType="org.example.entity.uuser">
+        UPDATE uuser
+        SET headshot = #{headshot}
+        WHERE name = #{name}
+    </update>
+
+
 </mapper>
