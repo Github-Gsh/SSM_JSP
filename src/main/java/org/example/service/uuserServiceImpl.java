@@ -20,4 +20,9 @@ public class uuserServiceImpl implements uuserService {
     public void updateHeadshot(uuser user) {
         uuserMapper.updateHeadshot(user);
     }
+
+    @Override
+    public void updateProject(uuser user) {
+        uuserMapper.updateProject(user);  // 调用 Mapper 中的 updateProject 方法
+    }
 }
