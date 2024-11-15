@@ -4,6 +4,10 @@ import org.example.entity.User;
 import org.example.entity.uuser;
 import org.example.service.uuserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,21 +34,15 @@ public class uuserController {
     // 显示用户基本信息，包括头像
     @RequestMapping("/uuserinfo")
     public String uuserMain(HttpSession session, Model model) {
-        // 从 session 中获取当前登录的 User 对象
         User loggedInUser = (User) session.getAttribute("user");
 
         if (loggedInUser != null) {
-            // 使用用户名（或ID）从 uuser 表中查询详细信息
             uuser uuserDetails = uuserService.findByuName(loggedInUser.getName());
-
-            // 将用户信息添加到 Model 中
             model.addAttribute("uuser", uuserDetails);
             session.setAttribute("uuser", uuserDetails); // 将 uuser 对象存入 session
-
             return "uuserInformation"; // 跳转到显示详细信息的页面
         } else {
-            // 如果未登录，重定向到登录页面
-            return "redirect:/login";
+            return "redirect:/login"; // 如果未登录，重定向到登录页面
         }
     }
 
@@ -55,28 +55,21 @@ public class uuserController {
 
         if (loggedInUser != null && !file.isEmpty()) {
             try {
-                // 获取文件的原始文件名
                 String originalFilename = file.getOriginalFilename();
-
-                // 获取项目路径，将文件保存到 upload 文件夹中
                 String uploadDir = request.getSession().getServletContext().getRealPath("/upload");
 
                 File dir = new File(uploadDir);
                 if (!dir.exists()) {
-                    dir.mkdirs();  // 如果目录不存在，则创建
+                    dir.mkdirs();
                 }
 
                 String filePath = uploadDir + "/" + originalFilename;
-
-                // 保存文件
                 file.transferTo(new File(filePath));
 
-                // 更新用户头像的路径（存储为访问路径）
                 String fileUrl = "/upload/" + originalFilename; // 存储相对路径
                 loggedInUser.setHeadshot(fileUrl);
                 uuserService.updateHeadshot(loggedInUser); // 更新数据库中的头像信息
 
-                // 返回成功的结果，包含新头像的URL
                 response.put("uploadSuccess", true);
                 response.put("newHeadshot", fileUrl);
             } catch (IOException e) {
@@ -87,7 +80,6 @@ public class uuserController {
             response.put("uploadSuccess", false);
             response.put("message", "用户未登录或文件为空");
         }
-
         return response;  // 返回响应
     }
 
@@ -100,28 +92,21 @@ public class uuserController {
 
         if (loggedInUser != null && !file.isEmpty()) {
             try {
-                // 获取文件的原始文件名
                 String originalFilename = file.getOriginalFilename();
-
-                // 获取项目路径，将文件保存到 upload 文件夹中
                 String uploadDir = request.getSession().getServletContext().getRealPath("/upload");
 
                 File dir = new File(uploadDir);
                 if (!dir.exists()) {
-                    dir.mkdirs();  // 如果目录不存在，则创建
+                    dir.mkdirs();
                 }
 
                 String filePath = uploadDir + "/" + originalFilename;
-
-                // 保存文件
                 file.transferTo(new File(filePath));
 
-                // 更新用户项目文件的路径（存储为访问路径）
                 String fileUrl = "/upload/" + originalFilename; // 存储相对路径
                 loggedInUser.setProject(fileUrl); // 更新项目文件字段
                 uuserService.updateProject(loggedInUser); // 更新数据库中的项目文件信息
 
-                // 返回成功的结果，包含新项目文件的URL
                 response.put("uploadSuccess", true);
                 response.put("newProject", fileUrl);
             } catch (IOException e) {
@@ -132,23 +117,42 @@ public class uuserController {
             response.put("uploadSuccess", false);
             response.put("message", "用户未登录或文件为空");
         }
-
         return response;  // 返回响应
     }
 
     // 下载项目文件
     @RequestMapping(value = "/downloadProject", method = RequestMethod.GET)
     @ResponseBody
-    public File downloadProject(@RequestParam("fileUrl") String fileUrl, HttpServletRequest request) {
+    public ResponseEntity<byte[]> downloadProject(@RequestParam("fileUrl") String fileUrl, HttpServletRequest request) {
         // 获取文件的绝对路径
         String filePath = request.getSession().getServletContext().getRealPath(fileUrl);
         File file = new File(filePath);
 
         if (file.exists()) {
-            return file; // 返回文件
+            try {
+                // 设置响应头，指示浏览器下载文件
+                HttpHeaders headers = new HttpHeaders();
+                String filename = URLEncoder.encode(file.getName(), "UTF-8");  // 对文件名进行编码
+
+                // 手动设置 Content-Disposition 头
+                headers.add("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+
+                // 根据文件类型设置 Content-Type
+                String contentType = Files.probeContentType(file.toPath());
+                if (contentType == null) {
+                    contentType = "application/octet-stream"; // 默认类型
+                }
+                headers.setContentType(MediaType.parseMediaType(contentType));
+
+                // 读取文件内容并返回
+                byte[] fileContent = Files.readAllBytes(file.toPath());
+                return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
+
+            } catch (IOException e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            }
         } else {
-            return null; // 文件不存在
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);  // 文件不存在
         }
     }
-
 }
