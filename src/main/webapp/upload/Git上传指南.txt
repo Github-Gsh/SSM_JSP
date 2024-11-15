@@ -1,0 +1,15 @@
+git add .
+
+然后，把文件提交到仓库，双引号内是提交注释。
+
+执行指令：git commit -m "提交文件"
+
+然后执行指令：git remote add origin git@github.com:Github-Gsh/pragram1.git
+
+执行指令：git push -u origin master
+不成功时git push -f origin master（强制上传覆盖）
+
+1）敲一个：yes， 然后回车
+
+
+
