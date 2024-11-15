@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -20,13 +19,19 @@
 <p>邮箱: ${uuser.mail}</p>
 <p>项目: ${uuser.project}</p>
 <p>组织: ${uuser.organization}</p>
-<form action="${pageContext.request.contextPath}/uploadHeadshot" method="post" enctype="multipart/form-data">
-    <label for="headshot">上传头像:</label>
-    <input type="file" id="headshot" name="headshot">
-    <button type="submit">上传</button>
-</form>
-<img src="data:image/jpeg;base64,${headshot}" alt="用户头像" />
 
+<!-- 显示当前头像 -->
+<%--<c:if test="${not empty uuser.headshot}">--%>
+<%--    <img src="${uuser.headshot}" alt="头像" width="100" height="100">--%>
+<%--</c:if>--%>
+
+<!-- 上传头像表单 -->
+<form action="/uploadHeadshot" method="post" enctype="multipart/form-data">
+    <input type="file" name="headshot" />
+    <button type="submit">上传头像</button>
+</form>
+
+<img src="${uuser.headshot}" alt="头像" />
 
 </body>
 </html>

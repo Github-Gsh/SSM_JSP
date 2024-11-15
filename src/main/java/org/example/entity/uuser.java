@@ -9,7 +9,7 @@ public class uuser {
     private String phone;
     private String address;
     private String mail;
-    private byte[] headshot;
+    private String headshot;
     private String project;
     private String organization;
 
@@ -22,7 +22,7 @@ public class uuser {
                 ", phone='" + phone + '\'' +
                 ", address='" + address + '\'' +
                 ", mail='" + mail + '\'' +
-                ", headshot=" + Arrays.toString(headshot) +
+                ", headshot='" + headshot + '\'' +
                 ", project='" + project + '\'' +
                 ", organization='" + organization + '\'' +
                 '}';
@@ -76,11 +76,11 @@ public class uuser {
         this.mail = mail;
     }
 
-    public byte[] getHeadshot() {
+    public String getHeadshot() {
         return headshot;
     }
 
-    public void setHeadshot(byte[] headshot) {
+    public void setHeadshot(String headshot) {
         this.headshot = headshot;
     }
 
