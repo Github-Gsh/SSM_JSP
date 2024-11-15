@@ -8,6 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <title>基础资料</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 
@@ -21,17 +22,55 @@
 <p>组织: ${uuser.organization}</p>
 
 <!-- 显示当前头像 -->
-<%--<c:if test="${not empty uuser.headshot}">--%>
-<%--    <img src="${uuser.headshot}" alt="头像" width="100" height="100">--%>
-<%--</c:if>--%>
+<c:if test="${not empty uuser.headshot}">
+    <img id="user-avatar" src="${uuser.headshot}" alt="头像" width="100" height="100">
+</c:if>
+<c:if test="${empty uuser.headshot}">
+    <img id="user-avatar" src="/images/default-avatar.png" alt="头像" width="100" height="100"> <!-- 默认头像 -->
+</c:if>
 
-<!-- 上传头像表单 -->
-<form action="/uploadHeadshot" method="post" enctype="multipart/form-data">
-    <input type="file" name="headshot" />
+<!-- 上传头像的表单 -->
+<form id="uploadForm" enctype="multipart/form-data">
+    <input type="file" name="headshot" id="headshot" />
     <button type="submit">上传头像</button>
 </form>
 
-<img src="${uuser.headshot}" alt="头像" />
+<div id="message"></div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        // 处理表单提交
+        $("#uploadForm").on("submit", function(event) {
+            event.preventDefault(); // 防止表单默认提交
+
+            var formData = new FormData(this); // 获取表单数据
+
+            $.ajax({
+                url: "/uploadHeadshot",  // 处理上传的URL
+                type: "POST",
+                data: formData,
+                processData: false,  // 不处理数据
+                contentType: false,  // 不设置Content-Type
+                success: function(response) {
+                    // 上传成功后，更新头像显示
+                    if(response.uploadSuccess) {
+                        $("#user-avatar").attr("src", response.newHeadshot); // 更新头像
+                        $("#message").text("头像上传成功");
+                    } else {
+                        $("#message").text("头像上传失败：" + response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    $("#message").text("上传失败：" + error);
+                }
+            });
+        });
+    });
+</script>
+
+<c:if test="${param.uploadSuccess == 'true'}">
+    <p>头像上传成功！</p>
+</c:if>
 
 </body>
 </html>

@@ -7,13 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class uuserController {
@@ -43,9 +47,10 @@ public class uuserController {
     }
 
     // 上传头像
-    @RequestMapping("/uploadHeadshot")
-    public String uploadHeadshot(@RequestParam("headshot") MultipartFile file, HttpSession session, Model model, HttpServletRequest request) {
-        // 从 session 中获取当前用户信息
+    @RequestMapping(value = "/uploadHeadshot", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> uploadHeadshot(@RequestParam("headshot") MultipartFile file, HttpSession session, HttpServletRequest request) {
+        Map<String, Object> response = new HashMap<>();
         uuser loggedInUser = (uuser) session.getAttribute("uuser");
 
         if (loggedInUser != null && !file.isEmpty()) {
@@ -71,16 +76,18 @@ public class uuserController {
                 loggedInUser.setHeadshot(fileUrl);
                 uuserService.updateHeadshot(loggedInUser); // 更新数据库中的头像信息
 
-                model.addAttribute("message", "头像上传成功");
+                // 返回成功的结果，包含新头像的URL
+                response.put("uploadSuccess", true);
+                response.put("newHeadshot", fileUrl);
             } catch (IOException e) {
-                model.addAttribute("message", "头像上传失败：" + e.getMessage());
+                response.put("uploadSuccess", false);
+                response.put("message", "头像上传失败：" + e.getMessage());
             }
         } else {
-            model.addAttribute("message", "用户未登录或文件为空");
+            response.put("uploadSuccess", false);
+            response.put("message", "用户未登录或文件为空");
         }
 
-        // 使用 forward 而不是 redirect，保持在同一个请求内
-        return "forward:/uuserinfo";
+        return response;  // 返回响应
     }
-
 }
