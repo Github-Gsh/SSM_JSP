@@ -18,7 +18,7 @@
 <p>电话号码: ${uuser.phone}</p>
 <p>地址: ${uuser.address}</p>
 <p>邮箱: ${uuser.mail}</p>
-<p>项目: ${uuser.project}</p>
+<p>项目: ${fn:substringAfter(uuser.project, '/upload/')}</p>
 <p>组织: ${uuser.organization}</p>
 
 <!-- 显示当前头像 -->
@@ -81,7 +81,7 @@
         });
     });
 
-
+//项目文件
     $(document).ready(function() {
         // 处理表单提交
         $("#uploadProjectForm").on("submit", function(event) {
