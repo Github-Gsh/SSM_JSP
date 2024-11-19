@@ -15,10 +15,11 @@
     </update>
 
     <!-- 新增更新项目文件路径的SQL语句 -->
-    <update id="updateProject" parameterType="org.example.entity.uuser">
-        UPDATE uuser
-        SET project = #{project}
-        WHERE name = #{name}
-    </update>
+<!--    <update id="updateProject" parameterType="org.example.entity.uuser">-->
+<!--        UPDATE uuser-->
+<!--        SET project = #{project}-->
+<!--        WHERE name = #{name}-->
+<!--    </update>-->
+
 
 </mapper>

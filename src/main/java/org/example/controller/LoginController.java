@@ -34,7 +34,6 @@ public class LoginController {
         if (user != null && user.getPassword().equals(password)) {
             // 登录成功，保存用户信息到 session
             session.setAttribute("user", user);
-
             // 根据用户的角色跳转到不同的页面
             if ("admin".equals(user.getRole())) {
                 return "redirect:/AdminMain";

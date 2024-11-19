@@ -24,7 +24,7 @@
             </div>
             <div class="profile_info">
                 <div class="profile_img">
-                    <img src="img/e.png" alt="">
+                    <img id="user-avatar" src="${uuser.headshot}" alt="头像" width="100" height="100">
                 </div>
                 <div class="profile_data">
                     <p class="name">${sessionScope.user.name}</p>
@@ -50,7 +50,7 @@
                     </a>
                     <ul class="accordion">
                         <li><a href="#" data-url="${pageContext.request.contextPath}/uuserinfo">基本资料</a></li>
-                        <li><a href="#" data-url="user/addUser">2</a></li>
+                        <li><a href="#" data-url="${pageContext.request.contextPath}/uuserproject">项目</a></li>
                         <li><a href="#" data-url="user/sub3">子菜单3</a></li>
                         <li><a href="#" data-url="user/sub4">子菜单4</a></li>
                         <li><a href="#" data-url="user/sub5">子菜单5</a></li>

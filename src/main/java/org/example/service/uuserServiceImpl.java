@@ -21,8 +21,8 @@ public class uuserServiceImpl implements uuserService {
         uuserMapper.updateHeadshot(user);
     }
 
-    @Override
-    public void updateProject(uuser user) {
-        uuserMapper.updateProject(user);  // 调用 Mapper 中的 updateProject 方法
-    }
+//    @Override
+//    public void updateProject(uuser user) {
+//        uuserMapper.updateProject(user);  // 调用 Mapper 中的 updateProject 方法
+//    }
 }

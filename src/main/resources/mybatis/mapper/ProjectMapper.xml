@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.dao.ProjectMapper">
+
+    <!--项目-->
+    <select id="findPjByName" resultType="org.example.entity.Project" parameterType="string">
+        select * from project where name=#{name}
+    </select>
+
+    <update id="updateProject" parameterType="org.example.entity.Project">
+        UPDATE project
+        SET project = #{project}
+        WHERE name = #{name}
+    </update>
+
+</mapper>

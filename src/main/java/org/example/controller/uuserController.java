@@ -83,76 +83,79 @@ public class uuserController {
         return response;  // 返回响应
     }
 
-    // 上传项目文件
-    @RequestMapping(value = "/uploadProject", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> uploadProject(@RequestParam("projectFile") MultipartFile file, HttpSession session, HttpServletRequest request) {
-        Map<String, Object> response = new HashMap<>();
-        uuser loggedInUser = (uuser) session.getAttribute("uuser");
+//    // 上传项目文件
+//    @RequestMapping(value = "/uploadProject", method = RequestMethod.POST)
+//    @ResponseBody
+//    public Map<String, Object> uploadProject(@RequestParam("projectFile") MultipartFile file, HttpSession session, HttpServletRequest request) {
+//        Map<String, Object> response = new HashMap<>();
+//        uuser loggedInUser = (uuser) session.getAttribute("uuser");
+//
+//        if (loggedInUser != null && !file.isEmpty()) {
+//            try {
+//                String originalFilename = file.getOriginalFilename();
+//                String uploadDir = request.getSession().getServletContext().getRealPath("/upload");
+//
+//                File dir = new File(uploadDir);
+//                if (!dir.exists()) {
+//                    dir.mkdirs();
+//                }
+//
+//                String filePath = uploadDir + "/" + originalFilename;
+//                file.transferTo(new File(filePath));
+//
+//                String fileUrl = "/upload/" + originalFilename; // 存储相对路径
+//                loggedInUser.setProject(fileUrl); // 更新项目文件字段
+//                uuserService.updateProject(loggedInUser); // 更新数据库中的项目文件信息
+//
+//                response.put("uploadSuccess", true);
+//                response.put("newProject", fileUrl);
+//            } catch (IOException e) {
+//                response.put("uploadSuccess", false);
+//                response.put("message", "项目文件上传失败：" + e.getMessage());
+//            }
+//        } else {
+//            response.put("uploadSuccess", false);
+//            response.put("message", "用户未登录或文件为空");
+//        }
+//        return response;  // 返回响应
+//    }
+//
+//    // 下载项目文件
+//    @RequestMapping(value = "/downloadProject", method = RequestMethod.GET)
+//    @ResponseBody
+//    public ResponseEntity<byte[]> downloadProject(@RequestParam("fileUrl") String fileUrl, HttpServletRequest request) {
+//        // 获取文件的绝对路径
+//        String filePath = request.getSession().getServletContext().getRealPath(fileUrl);
+//        File file = new File(filePath);
+//
+//        if (file.exists()) {
+//            try {
+//                // 设置响应头，指示浏览器下载文件
+//                HttpHeaders headers = new HttpHeaders();
+//                String filename = URLEncoder.encode(file.getName(), "UTF-8");  // 对文件名进行编码
+//
+//                // 手动设置 Content-Disposition 头
+//                headers.add("Content-Disposition", "attachment; filename=\"" + filename + "\"");
+//
+//                // 根据文件类型设置 Content-Type
+//                String contentType = Files.probeContentType(file.toPath());
+//                if (contentType == null) {
+//                    contentType = "application/octet-stream"; // 默认类型
+//                }
+//                headers.setContentType(MediaType.parseMediaType(contentType));
+//
+//                // 读取文件内容并返回
+//                byte[] fileContent = Files.readAllBytes(file.toPath());
+//                return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
+//
+//            } catch (IOException e) {
+//                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//            }
+//        } else {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);  // 文件不存在
+//        }
+//    }
 
-        if (loggedInUser != null && !file.isEmpty()) {
-            try {
-                String originalFilename = file.getOriginalFilename();
-                String uploadDir = request.getSession().getServletContext().getRealPath("/upload");
 
-                File dir = new File(uploadDir);
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
 
-                String filePath = uploadDir + "/" + originalFilename;
-                file.transferTo(new File(filePath));
-
-                String fileUrl = "/upload/" + originalFilename; // 存储相对路径
-                loggedInUser.setProject(fileUrl); // 更新项目文件字段
-                uuserService.updateProject(loggedInUser); // 更新数据库中的项目文件信息
-
-                response.put("uploadSuccess", true);
-                response.put("newProject", fileUrl);
-            } catch (IOException e) {
-                response.put("uploadSuccess", false);
-                response.put("message", "项目文件上传失败：" + e.getMessage());
-            }
-        } else {
-            response.put("uploadSuccess", false);
-            response.put("message", "用户未登录或文件为空");
-        }
-        return response;  // 返回响应
-    }
-
-    // 下载项目文件
-    @RequestMapping(value = "/downloadProject", method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseEntity<byte[]> downloadProject(@RequestParam("fileUrl") String fileUrl, HttpServletRequest request) {
-        // 获取文件的绝对路径
-        String filePath = request.getSession().getServletContext().getRealPath(fileUrl);
-        File file = new File(filePath);
-
-        if (file.exists()) {
-            try {
-                // 设置响应头，指示浏览器下载文件
-                HttpHeaders headers = new HttpHeaders();
-                String filename = URLEncoder.encode(file.getName(), "UTF-8");  // 对文件名进行编码
-
-                // 手动设置 Content-Disposition 头
-                headers.add("Content-Disposition", "attachment; filename=\"" + filename + "\"");
-
-                // 根据文件类型设置 Content-Type
-                String contentType = Files.probeContentType(file.toPath());
-                if (contentType == null) {
-                    contentType = "application/octet-stream"; // 默认类型
-                }
-                headers.setContentType(MediaType.parseMediaType(contentType));
-
-                // 读取文件内容并返回
-                byte[] fileContent = Files.readAllBytes(file.toPath());
-                return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
-
-            } catch (IOException e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-            }
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);  // 文件不存在
-        }
-    }
 }
